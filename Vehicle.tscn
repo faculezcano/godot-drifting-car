@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Wheel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Vehicle.gd" type="Script" id=2]
+[ext_resource path="res://textures/checker.png" type="Texture" id=3]
+[ext_resource path="res://VehicleEngine.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Gearbox.tscn" type="PackedScene" id=5]
+
+[sub_resource type="PhysicsMaterial" id=1]
+
+[sub_resource type="PhysicsMaterial" id=2]
+friction = 0.8
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 3 )
+uv1_scale = Vector3( 2, 2, 2 )
+
+[sub_resource type="CylinderMesh" id=4]
+material = SubResource( 3 )
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.185
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.234823, 0.299506, 0.843195 )
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 0.983121, 0.478664, 0.809193 )
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 3, 0.5, 1 )
+
+[node name="Vehicle" type="RigidBody"]
+pause_mode = 1
+mass = 100.0
+physics_material_override = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="RRWheel" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7236, -0.10237, 0.7 )
+wheel_radius = 0.3
+material = SubResource( 2 )
+suspension_spring_force = 1500.0
+kd = 200.0
+
+[node name="MeshInstance" type="MeshInstance" parent="RRWheel"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 4 )
+
+[node name="RLWheel" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7236, -0.10237, -0.7 )
+wheel_radius = 0.3
+material = SubResource( 2 )
+suspension_spring_force = 1500.0
+kd = 200.0
+
+[node name="MeshInstance" type="MeshInstance" parent="RLWheel"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 4 )
+
+[node name="FRWheel" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.576108, -0.137252, 0.7 )
+wheel_radius = 0.3
+suspension_spring_force = 1500.0
+kd = 200.0
+
+[node name="MeshInstance" type="MeshInstance" parent="FRWheel"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 4 )
+
+[node name="FLWheel" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.576108, -0.137252, -0.7 )
+wheel_radius = 0.3
+suspension_spring_force = 1500.0
+kd = 200.0
+
+[node name="MeshInstance" type="MeshInstance" parent="FLWheel"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.975745, -0.21891, 0, 0.21891, 0.975745, 0, 0, 0, 1, 0.983603, 0.051768, 0 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="."]
+transform = Transform( 0.97261, 0.232444, 0, -0.232444, 0.97261, 0, 0, 0, 1, -2.30744, 0.106875, 0 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.579451, 0.144443, 0 )
+shape = SubResource( 6 )
+
+[node name="Engine" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.673892, -0.357732, 0 )
+max_torque = 10.0
+rpm_rise_rate = 75000.0
+rpm_fall_rate = 50000.0
+
+[node name="Gearbox" parent="." instance=ExtResource( 5 )]
+gear = 5
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.667, -0.12, 0 )
+mesh = SubResource( 7 )
